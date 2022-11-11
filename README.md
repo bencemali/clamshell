@@ -1,7 +1,7 @@
 # Házi feladat
 
 Név/Nevek NEPTUN kóddal:
-- Minta Név (ABC123)
+- Mali Bence (ZA2ENI)
 
 # Feladat
 A tervezett feladat egy linux shell, más ismert shellekhez hasonló működéssel.
