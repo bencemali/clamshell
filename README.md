@@ -5,13 +5,14 @@ Név/Nevek NEPTUN kóddal:
 
 # Feladat
 A tervezett feladat egy linux shell, más ismert shellekhez hasonló működéssel.
+
 A program az alábbi funkciókkal fog rendelkezni:
 * Néhány alapvető shell builtin (exit, cd, echo)
-* Programok elindítása
-* Programok bemenetének, kimenetének átirányítása
-* Programok között pipeolás
+* Programok elindítása argumentumokkal (pl: ~$ ps aux)
+* Programok bemenetének, kimenetének átirányítása (>, <, >>)
+* Programok között pipeolás (pl: ~$ ls -hal | grep thread)
 
-A használni kívánt linux (nem triviális) syscallok/utilityk:
+A használni kívánt (nem triviális) linux syscallok/utilityk:
 * fork()
 * execvp()
 * wait()
