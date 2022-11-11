@@ -10,6 +10,7 @@ A program az alábbi funkciókkal fog rendelkezni:
 * Programok elindítása
 * Programok bemenetének, kimenetének átirányítása
 * Programok között pipeolás
+
 A használni kívánt linux (nem triviális) syscallok/utilityk:
 * fork()
 * execvp()
