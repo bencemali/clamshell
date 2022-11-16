@@ -31,17 +31,41 @@ CommandList::CommandList(std::vector<std::string>& w)
 
     size_t i = 0;
     for(int cidx = 0; cidx < numOfCommands; ++cidx) {
-        int commandNameIdx = i;
-        std::unique_ptr<Command> command = std::make_unique<Command>(words[i++]);
-        while(!isSeparator(words[i]) && i < words.size()) {
-            command->addArgument(words[i]);
+        size_t commandNameIdx = i;
+
+        bool isCommand = false;
+        if(i == 0 || (words[i - 1] != ">" && words[i - 1] != ">>" && words[i - 1] != "<")) {
+            isCommand = true;
+            std::unique_ptr<Command> command = std::make_unique<Command>(words[i++], pipefds + (cidx * 2));
+            while(!isSeparator(words[i]) && i < words.size()) {
+                command->addArgument(words[i++]);
+            }
+            commands.push_back(command);
         }
-        if(commandNameIdx != 0) {
-            //Redirect io
+
+        if(isCommand) {
+            //stdin
+            if(commandNameIdx != 0 && words[commandNameIdx - 1] == "|") {
+                //stdin from other program
+            } else if(commandNameIdx < (words.size() - 1) && words[i] == "<") {
+                //stdin from file
+            }
+
+            //stdout
+            if(commandNameIdx < (words.size() - 1)) {
+                if(words[i] == "|") {
+                    //stdout to other program
+                } else if(words[i] == ">") {
+                    //stdout to file
+                } else if(words[i] == ">>") {
+                    //append stdout to file
+                }
+            }
         }
         
-        commands.push_back(command);
     }
+
+    //close all pipes
 }
 
 void CommandList::executeAll() {
