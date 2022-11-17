@@ -12,7 +12,10 @@ int prompt() {
 
     std::string line;
     getline(std::cin, line, '\n');
-
+    if(std::cin.eof()) {
+        std::cout << std::endl;
+        return -1;
+    }
 
     std::vector<std::string> words;
     std::istringstream iss(line);
