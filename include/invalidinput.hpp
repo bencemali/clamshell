@@ -4,19 +4,23 @@
 #include <exception>
 #include <string>
 
-class InvalidInputException : public std::exception {
+class InvalidInputException : private std::exception {
 private:
     std::string msg;
-    using std::exception::what;
 
 public:
     InvalidInputException(std::string m) 
         : msg(m)
     {}
 
-    virtual std::string what() {
+    std::string getMessage() const {
         return msg;
     }
+};
+
+class EnterException : private std::exception {
+public:
+    EnterException() {}
 };
 
 #endif //INVALIDINPUT_H

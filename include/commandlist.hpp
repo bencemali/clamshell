@@ -11,8 +11,10 @@
 class CommandList {
 private:
     std::vector<std::string>& words;
-    std::vector<std::unique_ptr<Command>> commands;
+    std::vector<std::shared_ptr<Command>> commands;
+    std::vector<FILE*> fps;
     int* pipefds;
+    size_t numOfPipes;
     bool isSeparator(std::string str) {
         return str == "&&"
             || str == "|"
@@ -26,6 +28,9 @@ public:
 
     ~CommandList() {
         delete[] pipefds;
+        for(auto fp : fps) {
+            fclose(fp);
+        }
     }
 
     void executeAll();

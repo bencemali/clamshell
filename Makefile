@@ -20,7 +20,7 @@ $(TARGET): $(OBJS) | $(BINDIR)
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADS) | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-.PHONY: $(BINDIR) $(OBJDIR) clean memtest echo run
+.PHONY: $(BINDIR) $(OBJDIR) clean memtest echo run debug
 
 run: $(TARGET)
 	@./$(TARGET)
@@ -30,6 +30,9 @@ $(BINDIR) $(OBJDIR):
 
 clean:
 	rm -rf $(OBJDIR) $(BINDIR)
+
+debug: $(TARGET)
+	gdb $(TARGET)
 
 memtest: $(TARGET)
 	valgrind --tool=memcheck -s --leak-check=full --show-leak-kinds=all $(TARGET)

@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <sstream>
 #include "prompt.hpp"
+#include "commandlist.hpp"
+#include "exitexception.hpp"
 
 int prompt() {
     printPrompt();
@@ -20,11 +22,29 @@ int prompt() {
     }
 
     //process + exception handling
+    std::shared_ptr<CommandList> list;
+    try {
+        list = std::make_shared<CommandList>(words);
+    }
+    catch(const EnterException& e) {
+        return 0;
+    }
+    catch(const InvalidInputException& e) {
+        std::cout << e.getMessage() << std::endl;
+        return 0;
+    }
+
 
     //execute
+    try {
+        list->executeAll();
+    }
+    catch(const ExitException& e) {
+        return -1;
+    }
 
     //return
-    return -1;
+    return 0;
 }
 
 void printPrompt() {
