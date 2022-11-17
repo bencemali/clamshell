@@ -10,11 +10,13 @@ private:
     int* pipefds;
     size_t numOfPipes;
 
+    bool fromCommand;
     bool inFromFile;
     int in;
     std::string inputFile;
     FILE* infp;
 
+    bool toCommand;
     bool outToFile;
     int out;
     std::string outputFile;
@@ -26,10 +28,12 @@ public:
         : parts()
         , pipefds(fds)
         , numOfPipes(n)
+        , fromCommand(false)
         , inFromFile(false)
         , in(0)
         , inputFile()
         , infp(NULL)
+        , toCommand(false)
         , outToFile(false)
         , out(0)
         , outputFile()
@@ -47,21 +51,25 @@ public:
 
     void redirectIn(int fd) {
         inFromFile = false;
+        fromCommand = true;
         in = fd;
     }
 
     void redirectIn(std::string filename) {
         inFromFile = true;
+        fromCommand = false;
         inputFile = filename;
     }
 
     void redirectOut(int fd) {
         outToFile = false;
+        toCommand = true;
         out = fd;
     }
 
     void redirectOut(std::string filename, bool a = false) {
         outToFile = true;
+        toCommand = false;
         outputFile = filename;
         append = a;
     }

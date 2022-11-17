@@ -40,12 +40,12 @@ CommandList::CommandList(std::vector<std::string>& w)
     for(int cidx = 0; cidx < numOfCommands; ++cidx, ++i) {
         size_t commandNameIdx = i;
 
+
         std::shared_ptr<Command> command;
         bool isCommand = false;
         if(i == 0 || (words[i - 1] != ">" && words[i - 1] != ">>" && words[i - 1] != "<")) {
             isCommand = true;
-            command = std::make_shared<Command>(words[i], pipefds, numOfCommands * 2);
-            ++i;
+            command = std::make_shared<Command>(words[i++], pipefds, numOfPipes);
             while(i < words.size() && !isSeparator(words[i])) {
                 command->addArgument(words[i++]);
             }
@@ -57,7 +57,7 @@ CommandList::CommandList(std::vector<std::string>& w)
             if(commandNameIdx != 0 && words[commandNameIdx - 1] == "|") {
                 //stdin from other program
                 //meaning stdin attached to own read pipe end in pipefds
-                command->redirectIn(pipefds[cidx * 2]);
+                command->redirectIn(cidx * 2);
             } else if(i < (words.size() - 1) && words[i] == "<") {
                 //stdin from file
                 command->redirectIn(words[i + 1]);
@@ -67,14 +67,12 @@ CommandList::CommandList(std::vector<std::string>& w)
             if(i < (words.size() - 1)) {
                 if(words[i] == "|") {
                     //stdout to other program
-                    command->redirectOut((cidx * 2) + 3);
+                    command->redirectOut(((cidx + 1) * 2) + 1);
                 } else if(words[i] == ">") {
                     //stdout to file
-                    //TODO: trace chains
                     command->redirectOut(words[i + 1]);
                 } else if(words[i] == ">>") {
                     //append stdout to file
-                    //TODO: trace chains
                     command->redirectOut(words[i + 1], true);
                 }
             }
@@ -84,8 +82,10 @@ CommandList::CommandList(std::vector<std::string>& w)
 
 void CommandList::executeAll() {
     //check for builtins
-    if(words[0] == "exit") {
-        throw ExitException("exit");
+    for(auto w : words) {
+        if(w == "exit") {
+            throw ExitException("exit");
+        }
     }
 
     //execute all
@@ -107,7 +107,7 @@ void CommandList::executeAll() {
             close(pipefds[i]);
         }
         for(size_t i = 0; i < commands.size(); ++i) {
-            wait(NULL);
+            wait(nullptr);
         }
     }
 }
