@@ -5,17 +5,9 @@
 #include <string>
 
 class ExitException : public std::exception {
-private:
-    std::string msg;
-
 public:
-    ExitException(std::string m) 
-        : msg(m)
+    ExitException() 
     {}
-
-    std::string getMessage() const {
-        return msg;
-    }
 };
 
 #endif //EXITEXCEPTION_HPP

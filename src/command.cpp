@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <iostream>
 #include "command.hpp"
+#include "exitexception.hpp"
 
 void Command::execute() {
     //redirect io
@@ -25,6 +26,11 @@ void Command::execute() {
     for(size_t i = 0; i < numOfPipes; ++i) {
         close(pipefds[i]);
     }
+
+    //handle builtin
+    if(parts.size() > 0 && parts[0].compare("cd") == 0) {
+        throw ExitException();
+    }
     
     //execvp
     std::vector<char*> args;
@@ -33,5 +39,7 @@ void Command::execute() {
     }
     args.push_back(nullptr);
     execvp(parts[0].c_str(), args.data());
+    std::cout << "Command not found: " << parts[0] << std::endl;
+    throw ExitException();
 }
 

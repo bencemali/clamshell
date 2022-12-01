@@ -84,11 +84,18 @@ void CommandList::executeAll() {
     //check for builtins
     for(auto w : words) {
         if(w == "exit") {
-            throw ExitException("exit");
+            throw ExitException();
+        }
+    }
+    if(words.size() > 0 && words[0].compare("cd") == 0) {
+        if(words.size() == 1) {
+            chdir(getenv("HOME"));
+        } else {
+            chdir(words[1].c_str());
         }
     }
 
-    //execute all
+    //fork
     int rank = -1;
     pid_t parentid = getpid();
     for(int i = 0; (size_t)i < commands.size(); ++i) {
@@ -100,6 +107,7 @@ void CommandList::executeAll() {
         }
     }
 
+    //execute all
     if(rank != -1) {
         commands[rank]->execute();
     } else {
