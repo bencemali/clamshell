@@ -33,5 +33,9 @@ void Command::execute() {
     }
     args.push_back(nullptr);
     execvp(parts[0].c_str(), args.data());
+<<<<<<< HEAD
     exit(0);
+=======
+>>>>>>> 1b061c4a5932666fe1bc2263d78fb1c7ebf80b62
 }
+
