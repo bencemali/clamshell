@@ -21,3 +21,5 @@ A használni kívánt (nem triviális) linux syscallok/utilityk:
 * dup2()
 * freopen()
 * chdir()
+
+Az elkészült feladat bemutató videója [itt](https://odysee.com/linuxproghf:9?r=9Zr5PeXA4NpFRBXK9qucmmAmFtMRJheU) található.

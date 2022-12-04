@@ -87,11 +87,13 @@ void CommandList::executeAll() {
             throw ExitException();
         }
     }
-    if(words.size() > 0 && words[0].compare("cd") == 0) {
-        if(words.size() == 1) {
-            chdir(getenv("HOME"));
-        } else {
-            chdir(words[1].c_str());
+    for(int i = 0; i < (int)words.size(); ++i) {
+        if(words[i] == "cd") {
+            if(i < (int)words.size() - 1 && !isSeparator(words[i + 1])) {
+                chdir(words[i + 1].c_str());
+            } else {
+                chdir(getenv("HOME"));
+            }
         }
     }
 
