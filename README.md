@@ -2,7 +2,7 @@
 
 - Mali Bence (ZA2ENI)
 
-# Az kész feladat
+# A kész feladat
 
 A feladat a specifikációnak megfelelő, viszont a specifikációban nem szereplő parancssorozat végrehajtást (&&) is megvalósítottam.
 Az elkészült feladat bemutató videója [itt](https://odysee.com/linuxproghf:9?r=9Zr5PeXA4NpFRBXK9qucmmAmFtMRJheU) található.
