@@ -1,9 +1,13 @@
 # Házi feladat
 
-Név/Nevek NEPTUN kóddal:
 - Mali Bence (ZA2ENI)
 
-# Feladat
+# Az kész feladat
+
+A feladat a specifikációnak megfelelő, viszont a specifikációban nem szereplő parancssorozat végrehajtást (&&) is megvalósítottam.
+Az elkészült feladat bemutató videója [itt](https://odysee.com/linuxproghf:9?r=9Zr5PeXA4NpFRBXK9qucmmAmFtMRJheU) található.
+
+# Specifikáció
 A tervezett feladat egy linux shell, más ismert shellekhez hasonló működéssel.
 
 A program az alábbi funkciókkal fog rendelkezni:
@@ -22,4 +26,3 @@ A használni kívánt (nem triviális) linux syscallok/utilityk:
 * freopen()
 * chdir()
 
-Az elkészült feladat bemutató videója [itt](https://odysee.com/linuxproghf:9?r=9Zr5PeXA4NpFRBXK9qucmmAmFtMRJheU) található.
