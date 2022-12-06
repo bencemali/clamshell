@@ -22,6 +22,10 @@ private:
             || str == ">>"
             || str == "<";
     }
+    bool isNewCommandSeparator(std::string str) {
+        return str == "&&"
+            || str == "|";
+    }
 
 public:
     CommandList(std::vector<std::string>& w);

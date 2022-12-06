@@ -6,19 +6,22 @@
 CommandList::CommandList(std::vector<std::string>& w)
     : words(w)
 {
+    //Show new prompt if enter was pressed
     if(words.size() == 0) {
         throw EnterException();
     }
 
     //syntax checking
-    int numOfCommands = 1;
+    int numOfCommands = 1; //number of only the commands (program names)
     bool separatorBefore = true;
     for(size_t i = 0; i < words.size(); ++i) {
         if(isSeparator(words[i])) {
             if(separatorBefore) {
                 throw InvalidInputException("Invalid separator use");
             }
-            ++numOfCommands;
+            if(isNewCommandSeparator(words[i])) {
+                ++numOfCommands;
+            }
             separatorBefore = true;
         } else {
             separatorBefore = false;
@@ -28,19 +31,26 @@ CommandList::CommandList(std::vector<std::string>& w)
         throw InvalidInputException("Invalid separator use");
     }
 
-    //pipe
+    //open pipes for the command io redirection
     pipefds = new int[numOfCommands * 2];
     numOfPipes = numOfCommands * 2;
     for(int i = 0; i < (numOfCommands * 2); i += 2) {
         pipe(pipefds + i);
     }
 
-    //command creation + io redirect
+    //Command object creation + io redirection
     size_t i = 0;
     for(int cidx = 0; cidx < numOfCommands; ++cidx, ++i) {
         size_t commandNameIdx = i;
 
+        if(i != 0 && (words[i - 1] == ">" || words[i - 1] == ">>" || words[i - 1] == "<")) {
+            while(!isNewCommandSeparator(words[i - 1])) {
+                ++commandNameIdx;
+                ++i;
+            }
+        }
 
+        //Create the Command object
         std::shared_ptr<Command> command;
         bool isCommand = false;
         if(i == 0 || (words[i - 1] != ">" && words[i - 1] != ">>" && words[i - 1] != "<")) {
