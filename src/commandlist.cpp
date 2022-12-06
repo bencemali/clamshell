@@ -12,7 +12,7 @@ CommandList::CommandList(std::vector<std::string>& w)
     }
 
     //syntax checking
-    int numOfCommands = 1; //number of only the commands (program names)
+    numOfCommands = 1; //number of only the commands (program names)
     bool separatorBefore = true;
     for(size_t i = 0; i < words.size(); ++i) {
         if(isSeparator(words[i])) {
@@ -34,13 +34,13 @@ CommandList::CommandList(std::vector<std::string>& w)
     //open pipes for the command io redirection
     pipefds = new int[numOfCommands * 2];
     numOfPipes = numOfCommands * 2;
-    for(int i = 0; i < (numOfCommands * 2); i += 2) {
+    for(size_t i = 0; i < (numOfCommands * 2); i += 2) {
         pipe(pipefds + i);
     }
 
     //Command object creation + io redirection
     size_t i = 0;
-    for(int cidx = 0; cidx < numOfCommands; ++cidx, ++i) {
+    for(size_t cidx = 0; cidx < numOfCommands; ++cidx, ++i) {
         size_t commandNameIdx = i;
 
         if(i != 0 && (words[i - 1] == ">" || words[i - 1] == ">>" || words[i - 1] == "<")) {
@@ -107,28 +107,9 @@ void CommandList::executeAll() {
         }
     }
 
-    //fork
-    int rank = -1;
-    pid_t parentid = getpid();
-    for(int i = 0; (size_t)i < commands.size(); ++i) {
-        if(getpid() == parentid) {
-            fork();
-            if(getpid() != parentid) {
-                rank = i;
-            }
-        }
-    }
-
     //execute all
-    if(rank != -1) {
-        commands[rank]->execute();
-    } else {
-        for(size_t i = 0; i < numOfPipes; ++i) {
-            close(pipefds[i]);
-        }
-        for(size_t i = 0; i < commands.size(); ++i) {
-            wait(nullptr);
-        }
+    for(size_t i = 0; i < numOfCommands; ++i) {
+        commands[i]->execute();
     }
 }
 

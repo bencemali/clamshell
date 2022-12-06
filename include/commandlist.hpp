@@ -15,6 +15,7 @@ private:
     std::vector<FILE*> fps;
     int* pipefds;
     size_t numOfPipes;
+    size_t numOfCommands;
     bool isSeparator(std::string str) {
         return str == "&&"
             || str == "|"
