@@ -107,9 +107,28 @@ void CommandList::executeAll() {
         }
     }
 
+    //fork
+    int rank = -1;
+    pid_t parentid = getpid();
+    for(int i = 0; (size_t)i < commands.size(); ++i) {
+        if(getpid() == parentid) {
+            fork();
+            if(getpid() != parentid) {
+                rank = i;
+            }
+        }
+    }
+
     //execute all
-    for(size_t i = 0; i < numOfCommands; ++i) {
-        commands[i]->execute();
+    if(rank != -1) {
+        commands[rank]->execute();
+    } else {
+        for(size_t i = 0; i < numOfPipes; ++i) {
+            close(pipefds[i]);
+        }
+        for(size_t i = 0; i < commands.size(); ++i) {
+            wait(nullptr);
+        }
     }
 }
 
