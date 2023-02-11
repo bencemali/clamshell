@@ -1,6 +1,5 @@
 #include <unistd.h>
 #include <iostream>
-#include <sys/wait.h>
 #include "command.hpp"
 #include "exitexception.hpp"
 
